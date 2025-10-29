@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question...</title>
+    <!-- 1. Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Load custom fonts for a cute look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 3. Apply custom font to headings */
+        h1, h2 {
+            font-family: 'Pacifico', cursive;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Ensure the no-btn transition is smooth */
+            #no-btn {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="bg-pink-100 min-h-screen flex items-center justify-center p-4 overflow-hidden">
+
+    <div class="main-container w-full max-w-md mx-auto text-center">
+
+        <!-- Step 1: Initial Question -->
+        <div id="step-1" class="step">
+            <!-- Cute animated GIF -->
+            <img id="gif" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnU2czVhbjRja2QxNWRmOWF2YWRobzY2bnNxMDVxZXFpZHkwdjZmNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tpVKvAabWt3G5csMkT/giphy.gif" alt="Cute bear proposing" class="w-64 h-64 mx-auto rounded-lg shadow-lg" onerror="this.src='https://placehold.co/256x256/FEF2F2/E11D48?text=Be+Mine%3F&font=pacifico'">
+            
+            <h1 class="text-3xl md:text-5xl text-pink-600 my-8">Quer sair comigo?</h1>
+            
+            <div class="flex justify-center items-center gap-4">
+                <!-- Yes Button: Large and enticing -->
+                <button id="yes-btn" class="bg-green-500 text-white font-bold py-4 px-10 rounded-lg text-2xl shadow-xl transform hover:scale-110 transition-all duration-300">
+                    Yes
+                </button>
+                <!-- No Button: Will be moved by JS -->
+                <button id="no-btn" class="bg-red-500 text-white font-bold py-4 px-10 rounded-lg text-2xl shadow-xl">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Food Preference -->
+        <div id="step-2" class="step hidden">
+            <h1 class="text-3xl md:text-5xl text-pink-600 my-8">O que você prefere comer?</h1>
+            <div class="flex flex-col space-y-4">
+                <button class="choice-btn bg-white text-pink-600 border-2 border-pink-400 font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-pink-50 transition-all">Lanche</button>
+                <button class="choice-btn bg-white text-pink-600 border-2 border-pink-400 font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-pink-50 transition-all">Pizza</button>
+                <button class="choice-btn bg-white text-pink-600 border-2 border-pink-400 font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-pink-50 transition-all">Sushi</button>
+                <button class="choice-btn bg-white text-pink-600 border-2 border-pink-400 font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-pink-50 transition-all">Restaurante</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Day Preference -->
+        <div id="step-3" class="step hidden">
+            <h1 class="text-3xl md:text-5xl text-pink-600 my-8">Qual o melhor dia para você?</h1>
+            <div class="flex flex-col space-y-4">
+                <button class="day-btn bg-white text-pink-600 border-2 border-pink-400 font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-pink-50 transition-all">Sexta, 11/07</button>
+                <button class="day-btn bg-white text-pink-600 border-2 border-pink-400 font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-pink-50 transition-all">Sábado, 11/08</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Final Message -->
+        <div id="step-4" class="step hidden">
+             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTBqN2d0M2FwdXJqdDQ0OXBqNXc2bW00YTJtbGxoZmhqN3Z1ZzJ1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1311f7YK2uA3uM/giphy.gif" alt="Happy dance" class="w-64 h-64 mx-auto rounded-lg shadow-lg" onerror="this.src='https://placehold.co/256x256/FEF2F2/E11D48?text=See+You!&font=pacifico'">
+
+            <h1 class="text-3xl md:text-5xl text-pink-600 my-8">
+                Te pego as 19hr <span id="selected-day" class="text-pink-700 underline"></span>!
+            </h1>
+        </div>
+
+    </div>
+
+    <!-- 
+      NEW HIDDEN FORM FOR EMAIL NOTIFICATION
+      This form will be submitted in the background.
+      
+      IMPORTANT: 
+      1. Change 'YOUR-EMAIL-HERE' to your actual email address.
+      2. The first time you test this, you'll get a confirmation email from Formsubmit.co. Click it to activate.
+      3. The '_next' value makes sure she stays on the page and doesn't see a 'thank you' message from formsubmit.
+    -->
+    <form 
+        id="notification-form" 
+        action="https://formsubmit.co/lucasamorimsena8181@gmail.com" 
+        method="POST" 
+        class="hidden"
+    >
+        <input type="hidden" name="_subject" value="She said Yes!">
+        <input type="hidden" name="food_choice" id="form-food">
+        <input type="hidden" name="day_choice" id="form-day">
+        <!-- This line redirects back to your page so she doesn't notice anything -->
+        <input type="hidden" name="_next" value="https://proposal.html">
+    </form>
+
+
+    <script>
+        // Get all the elements we'll need
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+        const step4 = document.getElementById('step-4');
+
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        
+        const choiceBtns = document.querySelectorAll('.choice-btn');
+        const dayBtns = document.querySelectorAll('.day-btn');
+        const selectedDayEl = document.getElementById('selected-day');
+
+        // We need a variable to store the food choice
+        let foodChoice = '';
+
+        // === Step 1 Logic: The Runaway Button ===
+
+        // Function to move the "No" button
+        function moveNoButton() {
+            // Change position to absolute on first hover
+            if (noBtn.style.position !== 'absolute') {
+                noBtn.style.position = 'absolute';
+            }
+
+            // Get window dimensions
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Get button dimensions
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            // Calculate a random new position
+            let newX = Math.random() * (viewportWidth - btnWidth);
+            let newY = Math.random() * (viewportHeight - btnHeight);
+
+            // Set the new position
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+        }
+
+        // Add the event listener to move the button on MOUSEOVER (so she can't even click it)
+        noBtn.addEventListener('mouseover', moveNoButton);
+        // Also add it for click, just in case she's fast
+        noBtn.addEventListener('click', moveNoButton);
+
+
+        // === Step 2 Logic: "Yes" clicked ===
+        yesBtn.addEventListener('click', () => {
+            step1.classList.add('hidden');
+            step2.classList.remove('hidden');
+        });
+
+        // === Step 3 Logic: Food choice ===
+        choiceBtns.forEach(btn => {
+            btn.addEventListener('click', (event) => {
+                // Store the food choice
+                foodChoice = event.target.innerText;
+                
+                // Move to the next step
+                step2.classList.add('hidden');
+                step3.classList.remove('hidden');
+            });
+        });
+
+        // === Step 4 Logic: Day choice ===
+        dayBtns.forEach(btn => {
+            btn.addEventListener('click', (event) => {
+                // Get the text of the clicked day button
+                const day = event.target.innerText;
+                
+                // Set the text in the final message
+                selectedDayEl.textContent = day;
+
+                // --- NEW: Populate and submit the hidden form ---
+                document.getElementById('form-food').value = foodChoice;
+                document.getElementById('form-day').value = day;
+                
+                // Submit the form
+                try {
+                    document.getElementById('notification-form').submit();
+                } catch (e) {
+                    console.error("Form submission failed (this is normal in some sandboxed environments, test it on a live URL)", e);
+                }
+                // --- End of new code ---
+
+                // Show the final step
+                step3.classList.add('hidden');
+                step4.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
+
